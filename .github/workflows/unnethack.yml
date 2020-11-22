@@ -23,5 +23,8 @@ jobs:
     - name: make
       run: make all
 
+    - name: Install libcheck
+      run: sudo apt-get install check
+
     - name: make check
       run: make check
