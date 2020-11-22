@@ -1,0 +1,27 @@
+name: UnNetHack CI builds
+
+on:
+  push:
+    branches: [ '*' ]
+  pull_request:
+    branches: [ '*' ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: configure
+      env:
+        CFLAGS: '-O2 -Wall -Wextra -fno-common -Werror=format -Werror=return-type -Werror=uninitialized -Werror=implicit-function-declaration -Wno-format-overflow'
+        LFLAGS: '-fno-common'
+      run: "./configure --with-owner=`id -un` --with-group=`id -gn` --enable-wizmode=`id -un` --enable-dummy-graphics --enable-lisp-graphics --enable-curses-graphics --disable-x11-graphics --enable-tty-graphics"
+
+    - name: make
+      run: make all
+
+    - name: make check
+      run: make check
