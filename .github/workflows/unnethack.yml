@@ -7,6 +7,19 @@ on:
     branches: [ '*' ]
 
 jobs:
+  build_windows:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: install dependencies
+      run: sudo apt-get install gcc-mingw-w64-i686 wine imagemagick
+
+    - name: build
+      run: sys/autoconf/build_win32.sh
+
   build_linux:
 
     runs-on: ubuntu-latest
@@ -23,7 +36,7 @@ jobs:
     - name: make
       run: make all
 
-    - name: Install libcheck
+    - name: install libcheck
       run: sudo apt-get install check
 
     - name: make check
