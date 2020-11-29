@@ -41,7 +41,7 @@ jobs:
     - name: unnethack.tar.gz
       uses: actions/upload-artifact@v2
       with:
-        name: unnethack-win32-${{VERSION}}-${{ env.sha_short }}.tar.gz
+        name: unnethack-win32-${VERSION}-${{ env.VERSION }}.tar.gz
         path: /tmp/unnethack_win32/unnethack-*.tar.gz
 
 
