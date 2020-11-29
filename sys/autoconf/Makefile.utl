@@ -338,7 +338,7 @@ xpm2img.ttp: xpm2img.o bitmfile.o
 tile2beos: tile2beos.o $(TEXT_IO)
 	$(CC) $(LFLAGS) -o tile2beos tile2beos.o $(TEXT_IO) -lbe
 
-tilemap: $(srcdir)/../win/share/tilemap.c $(HACK_H)
+tilemap$(EXEEXT): $(srcdir)/../win/share/tilemap.c $(HACK_H)
 	$(CC) $(CFLAGS) $(LFLAGS) -o $@ $(srcdir)/../win/share/tilemap.c $(LIBS)
 $(srcdir)/../src/tile.c: tilemap
 	./tilemap$(EXEEXT)
