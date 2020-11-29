@@ -219,8 +219,8 @@ panic.o:     panic.c $(CONFIG_H)
 
 #	dependencies for lev_comp
 #
-lev_comp:  $(SPLEVOBJS)
-	$(CC) $(LFLAGS) -o lev_comp $(SPLEVOBJS) $(LIBS)
+lev_comp$(EXEEXT):  $(SPLEVOBJS)
+	$(CC) $(LFLAGS) -o $@ $(SPLEVOBJS) $(LIBS)
 
 lev_yacc.o:  lev_yacc.c $(HACK_H) ../include/sp_lev.h
 lev_main.o:  lev_main.c $(HACK_H) ../include/sp_lev.h ../include/tcap.h \
@@ -254,8 +254,8 @@ lintlev:
 
 #	dependencies for dgn_comp
 #
-dgn_comp:  $(DGNCOMPOBJS)
-	$(CC) $(LFLAGS) -o dgn_comp $(DGNCOMPOBJS) $(LIBS)
+dgn_comp$(EXEEXT):  $(DGNCOMPOBJS)
+	$(CC) $(LFLAGS) -o $@ $(DGNCOMPOBJS) $(LIBS)
 
 dgn_yacc.o:  dgn_yacc.c $(CONFIG_H) ../include/dgn_file.h ../include/date.h
 dgn_main.o:  dgn_main.c $(CONFIG_H) ../include/dlb.h
@@ -287,15 +287,15 @@ lintdgn:
 #	dependencies for recover
 #
 recover$(EXEEXT): $(RECOVOBJS)
-	$(CC) $(LFLAGS) -o recover$(EXEEXT) $(RECOVOBJS) $(LIBS)
+	$(CC) $(LFLAGS) -o $@ $(RECOVOBJS) $(LIBS)
 
 recover.o: recover.c $(CONFIG_H) ../include/date.h
 
 
 #	dependencies for dlb
 #
-dlb:	$(DLBOBJS)
-	$(CC) $(LFLAGS) -o dlb $(DLBOBJS) $(LIBS)
+dlb$(EXEEXT): $(DLBOBJS)
+	$(CC) $(LFLAGS) -o $@ $(DLBOBJS) $(LIBS)
 
 dlb_main.o: dlb_main.c $(CONFIG_H) ../include/dlb.h ../include/date.h
 	$(CC) $(CFLAGS) -c $(srcdir)/dlb_main.c
@@ -339,7 +339,7 @@ tile2beos: tile2beos.o $(TEXT_IO)
 	$(CC) $(LFLAGS) -o tile2beos tile2beos.o $(TEXT_IO) -lbe
 
 tilemap: $(srcdir)/../win/share/tilemap.c $(HACK_H)
-	$(CC) $(CFLAGS) $(LFLAGS) -o tilemap$(EXEEXT) $(srcdir)/../win/share/tilemap.c $(LIBS)
+	$(CC) $(CFLAGS) $(LFLAGS) -o $@ $(srcdir)/../win/share/tilemap.c $(LIBS)
 $(srcdir)/../src/tile.c: tilemap
 	./tilemap$(EXEEXT)
 #../include/tile.h: ../win/share/tile.h tilemap
