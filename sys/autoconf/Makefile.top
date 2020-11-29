@@ -224,7 +224,7 @@ title.img:
 	( cd dat ; $(MAKE) title.img )
 
 check-dlb: @OPTIONS_FILE@
-	@if egrep -s librarian dat/@OPTIONS_FILE@ ; then $(MAKE) dlb ; else true ; fi
+	@if egrep -s librarian dat/@OPTIONS_FILE@ ; then $(MAKE) dlb$(EXEEXT) ; else true ; fi
 
 dlb$(EXEEXT): spec_levs
 	( cd util ; $(MAKE) dlb$(EXEEXT) )
