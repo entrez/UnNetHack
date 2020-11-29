@@ -185,7 +185,7 @@ YACCDIST =
 #	dependencies for makedefs
 #
 makedefs$(EXEEXT):	$(MAKEOBJS)
-	$(CC) $(LFLAGS) -o makedefs $(MAKEOBJS)
+	$(CC) $(LFLAGS) -o makedefs$(EXEEXT) $(MAKEOBJS)
 
 makedefs.o: makedefs.c $(CONFIG_H) $(srcdir)/../include/permonst.h \
 		$(srcdir)/../include/objclass.h $(srcdir)/../include/monsym.h \
