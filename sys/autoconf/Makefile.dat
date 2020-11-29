@@ -16,13 +16,13 @@ LEVCOMP_FLAGS=
 
 all:	$(VARDAT) spec_levs quest_levs dungeon
 
-../util/makedefs:
+../util/makedefs$(EXEEXT):
 	(cd ../util ; make makedefs$(EXEEXT))
 
-../util/dgn_comp:
+../util/dgn_comp$(EXEEXT):
 	(cd ../util ; make dgn_comp$(EXEEXT))
 
-../util/lev_comp:
+../util/lev_comp$(EXEEXT):
 	(cd ../util ; make lev_comp$(EXEEXT))
 
 ../util/tile2x11:
