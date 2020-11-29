@@ -20,10 +20,10 @@ all:	$(VARDAT) spec_levs quest_levs dungeon
 	(cd ../util ; make makedefs$(EXEEXT))
 
 ../util/dgn_comp:
-	(cd ../util ; make dgn_comp)
+	(cd ../util ; make dgn_comp$(EXEEXT))
 
 ../util/lev_comp:
-	(cd ../util ; make lev_comp)
+	(cd ../util ; make lev_comp$(EXEEXT))
 
 ../util/tile2x11:
 	(cd ../util ; make tile2x11)
