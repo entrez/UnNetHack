@@ -11,6 +11,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      SHORT_SHA: ${GITHUB_SHA::8}
+      VERSION: `grep VERSION_STRING include/date.h | cut -f 2 -d \"`
+
     steps:
     - uses: actions/checkout@v2
     - name: setup
@@ -25,12 +29,12 @@ jobs:
     - name: build
       run: sys/autoconf/build_win32.sh
 
-    - name: win32 build
+    - name: unnethack-win32-${VERSION}-${SHORT_SHA}.zip
       uses: actions/upload-artifact@v2
       with:
         path: /tmp/unnethack_win32/unnethack-win32-*.zip
 
-    - name: tar.gz
+    - name: unnethack-${VERSION}-${SHORT_SHA}.tar.gz
       uses: actions/upload-artifact@v2
       with:
         path: /tmp/unnethack_win32/unnethack-*.tar.gz
