@@ -14,11 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: environment variables
-      run: |
-          echo "GITHUB_SHA_SHORT=$GITHUB_SHA_SHORT" >> $GITHUB_ENV
-          echo "VERSION=$(grep VERSION_STRING include/date.h | cut -f 2 -d \")" >> $GITHUB_ENV
-
     - name: setup
       run: "sudo dpkg --add-architecture i386 && dpkg --print-foreign-architectures && sudo apt-get update"
 
@@ -30,6 +25,11 @@ jobs:
 
     - name: build
       run: sys/autoconf/build_win32.sh
+
+    - name: environment variables
+      run: |
+          echo "GITHUB_SHA_SHORT=$GITHUB_SHA_SHORT" >> $GITHUB_ENV
+          echo "VERSION=$(grep VERSION_STRING include/date.h | cut -f 2 -d \")" >> $GITHUB_ENV
 
     - name: unnethack-win32-${VERSION}-${GITHUB_SHA_SHORT}.zip
       uses: actions/upload-artifact@v2
