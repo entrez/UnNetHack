@@ -28,18 +28,19 @@ jobs:
 
     - name: environment variables
       run: |
-          echo "SHA_SHORT=$GITHUB_SHA_SHORT" >> $GITHUB_ENV
+          echo "SHA_SHORT=$(echo GITHUB_SHA | cut -b 1-8)" >> $GITHUB_ENV
           echo "VERSION=$(grep VERSION_STRING include/date.h | cut -f 2 -d \")" >> $GITHUB_ENV
 
     - name: unnethack-win32.zip
       uses: actions/upload-artifact@v2
       with:
-        name: unnethack-win32-${VERSION}-${GITHUB_SHA_SHORT}.zip
+        name: unnethack-win32-${{ env.version }}-${{ env.sha_short }}.zip
         path: /tmp/unnethack_win32/unnethack-win32-*.zip
 
     - name: unnethack.tar.gz
       uses: actions/upload-artifact@v2
       with:
+        name: unnethack-win32-${{ env.version }}-${{ env.sha_short }}.tar.gz
         path: /tmp/unnethack_win32/unnethack-*.tar.gz
 
 
