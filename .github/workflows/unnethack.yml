@@ -17,7 +17,10 @@ jobs:
       run: "sudo dpkg --add-architecture i386 && dpkg --print-foreign-architectures && sudo apt-get update"
 
     - name: install dependencies
-      run: sudo apt-get install gcc-mingw-w64-i686 wine-stable wine32 wine-binfmt imagemagick
+      run: sudo apt-get install gcc-mingw-w64-i686 wine-development wine32 wine-binfmt imagemagick
+
+    - name: binfmt
+      run: sudo update-binfmts --import /usr/share/binfmts/wine
 
     - name: build
       run: sys/autoconf/build_win32.sh
