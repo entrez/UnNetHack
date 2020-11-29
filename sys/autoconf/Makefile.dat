@@ -270,22 +270,22 @@ GEM_RSC.RSC:
 	# cp $(srcdir)/../win/gem/GEM_RSC.RSC GEM_RSC.RSC
 	$(UUDECODE) $(srcdir)/../win/gem/gem_rsc.uu
 
-data:	data.base ../util/makedefs
+data:	data.base ../util/makedefs$(EXEEXT)
 	../util/makedefs$(EXEEXT) -d
 
-rumors:	rumors.tru rumors.fal ../util/makedefs
+rumors:	rumors.tru rumors.fal ../util/makedefs$(EXEEXT)
 	../util/makedefs$(EXEEXT) -r
 
-quest.dat:	quest.txt ../util/makedefs
+quest.dat:	quest.txt ../util/makedefs$(EXEEXT)
 	../util/makedefs$(EXEEXT) -q
 
-oracles:	oracles.txt ../util/makedefs
+oracles:	oracles.txt ../util/makedefs$(EXEEXT)
 	../util/makedefs$(EXEEXT) -h
 
 vaults.dat:	spec_levs
 
 # note: 'options' should have already been made when include/date.h was created
-options:	../util/makedefs
+options:	../util/makedefs$(EXEEXT)
 	../util/makedefs$(EXEEXT) -v
 
 
@@ -344,7 +344,7 @@ quest_levs: ../util/lev_comp \
 	../util/lev_comp$(EXEEXT) $(LEVCOMP_FLAGS) $(srcdir)/Wizard.des
 	touch quest_levs
 
-dungeon: $(srcdir)/dungeon.def ../util/makedefs ../util/dgn_comp
+dungeon: $(srcdir)/dungeon.def ../util/makedefs$(EXEEXT) ../util/dgn_comp$(EXEEXT)
 	../util/makedefs$(EXEEXT) -e
 	../util/dgn_comp$(EXEEXT) dungeon.pdf
 
