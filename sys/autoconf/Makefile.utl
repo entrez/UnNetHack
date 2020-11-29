@@ -316,7 +316,7 @@ TEXT_IO = tiletext.o tiletxt.o $(ONAMING)
 GIFREADERS = gifread.o $(OALLOC)
 PPMWRITERS = ppmwrite.o $(OALLOC)
 
-tileutils: tilemap gif2txt txt2ppm tile2x11
+tileutils: tilemap$(EXEEXT) gif2txt txt2ppm tile2x11
 
 gif2txt: $(GIFREADERS) $(TEXT_IO)
 	$(CC) $(LFLAGS) -o gif2txt $(GIFREADERS) $(TEXT_IO) $(LIBS)
@@ -340,12 +340,12 @@ tile2beos: tile2beos.o $(TEXT_IO)
 
 tilemap$(EXEEXT): $(srcdir)/../win/share/tilemap.c $(HACK_H)
 	$(CC) $(CFLAGS) $(LFLAGS) -o $@ $(srcdir)/../win/share/tilemap.c $(LIBS)
-$(srcdir)/../src/tile.c: tilemap
+$(srcdir)/../src/tile.c: tilemap$(EXEEXT)
 	./tilemap$(EXEEXT)
-#../include/tile.h: ../win/share/tile.h tilemap
+#../include/tile.h: ../win/share/tile.h tilemap$(EXEEXT)
 #	./tilemap$(EXEEXT)
 
-../include/tile.h: ../win/share/tile.h tilemap
+../include/tile.h: ../win/share/tile.h tilemap$(EXEEXT)
 	./tilemap$(EXEEXT)
 	cp ../win/share/tile.h ../include/tile.h
 
