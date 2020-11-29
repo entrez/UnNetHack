@@ -11,12 +11,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-      SHORT_SHA: ${GITHUB_SHA::8}
-      VERSION: `grep VERSION_STRING include/date.h | cut -f 2 -d \"`
-
     steps:
     - uses: actions/checkout@v2
+
+    - name: environment variables
+      run: |
+          echo "GITHUB_SHA_SHORT=$GITHUB_SHA_SHORT"
+          echo "VERSION=$(grep VERSION_STRING include/date.h | cut -f 2 -d \")"
+
     - name: setup
       run: "sudo dpkg --add-architecture i386 && dpkg --print-foreign-architectures && sudo apt-get update"
 
@@ -29,12 +31,12 @@ jobs:
     - name: build
       run: sys/autoconf/build_win32.sh
 
-    - name: unnethack-win32-${VERSION}-${SHORT_SHA}.zip
+    - name: unnethack-win32-${VERSION}-${GITHUB_SHA_SHORT}.zip
       uses: actions/upload-artifact@v2
       with:
         path: /tmp/unnethack_win32/unnethack-win32-*.zip
 
-    - name: unnethack-${VERSION}-${SHORT_SHA}.tar.gz
+    - name: unnethack-${VERSION}-${GITHUB_SHA_SHORT}.tar.gz
       uses: actions/upload-artifact@v2
       with:
         path: /tmp/unnethack_win32/unnethack-*.tar.gz
