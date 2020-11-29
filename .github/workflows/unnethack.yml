@@ -13,9 +13,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: setup
+      run: "sudo dpkg --add-architecture i386 && dpkg --print-foreign-architectures && sudo apt-get update"
 
     - name: install dependencies
-      run: sudo apt-get install gcc-mingw-w64-i686 wine imagemagick
+      run: sudo apt-get install gcc-mingw-w64-i686 wine-stable imagemagick
 
     - name: build
       run: sys/autoconf/build_win32.sh
