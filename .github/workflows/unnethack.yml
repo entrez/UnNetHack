@@ -25,6 +25,19 @@ jobs:
     - name: build
       run: sys/autoconf/build_win32.sh
 
+    - name: win32 build
+      uses: actions/upload-artifact@v2
+      with:
+        name: win32 build
+        path: /tmp/unnethack_win32/unnethack-win32-*.zip
+
+    - name: tar.gz
+      uses: actions/upload-artifact@v2
+      with:
+        name: unnethack tar file
+        path: /tmp/unnethack_win32/unnethack-*.tar.gz
+
+
   build_linux:
 
     runs-on: ubuntu-latest
