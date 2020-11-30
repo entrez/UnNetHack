@@ -7,44 +7,6 @@ on:
     branches: [ '*' ]
 
 jobs:
-  build_windows:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: setup
-      run: "sudo dpkg --add-architecture i386 && dpkg --print-foreign-architectures && sudo apt-get update"
-
-    - name: install dependencies
-      run: sudo apt-get install gcc-mingw-w64-i686 wine-development wine32 wine-binfmt imagemagick
-
-    - name: binfmt
-      run: sudo update-binfmts --import /usr/share/binfmts/wine
-
-    - name: build
-      run: sys/autoconf/build_win32.sh
-
-    - name: environment variables
-      run: |
-          env
-          echo "SHA_SHORT=$(echo $GITHUB_SHA | cut -b 1-8)" >> $GITHUB_ENV
-          echo "VERSION=$(grep VERSION_STRING include/date.h | cut -f 2 -d \")" >> $GITHUB_ENV
-
-    - name: unnethack-win32.zip
-      uses: actions/upload-artifact@v2
-      with:
-        name: unnethack-win32-${{ env.version }}-${{ env.sha_short }}.zip
-        path: /tmp/unnethack_win32/unnethack-win32-*.zip
-
-    - name: unnethack.tar.gz
-      uses: actions/upload-artifact@v2
-      with:
-        name: unnethack-win32-${VERSION}-${{ env.VERSION }}.tar.gz
-        path: /tmp/unnethack_win32/unnethack-*.tar.gz
-
-
   build_linux:
 
     runs-on: ubuntu-latest
@@ -81,3 +43,36 @@ jobs:
 
     - name: make
       run: make all
+
+  build_windows:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup
+      run: |
+          "sudo dpkg --add-architecture i386 && dpkg --print-foreign-architectures && sudo apt-get update"
+          "sudo apt-get install gcc-mingw-w64-i686 wine-development wine32 wine-binfmt imagemagick"
+          "sudo update-binfmts --import /usr/share/binfmts/wine"
+
+    - name: Build
+      run: sys/autoconf/build_win32.sh
+
+    - name: Set environment variables
+      run: |
+          echo "sha_short=$(echo $GITHUB_SHA | cut -b 1-8)" >> $GITHUB_ENV
+          echo "version=$(grep VERSION_STRING include/date.h | cut -f 2 -d \")" >> $GITHUB_ENV
+
+    - name: Build unnethack-win32.zip artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: unnethack-win32-${{ env.version }}-${{ env.sha_short }}.zip
+        path: /tmp/unnethack_win32/unnethack-win32-*.zip
+
+    - name: Build unnethack.tar.gz artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: unnethack-win32-${{ env.version }}-${{ env.sha_short }}.tar.gz
+        path: /tmp/unnethack_win32/unnethack-*.tar.gz
