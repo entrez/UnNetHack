@@ -7,7 +7,7 @@ on:
     branches: [ '*' ]
 
 jobs:
-  build_linux:
+  linux:
 
     runs-on: ubuntu-latest
 
@@ -29,7 +29,7 @@ jobs:
     - name: make check
       run: make check
 
-  build_macos:
+  macos:
     runs-on: macos-latest
 
     steps:
@@ -44,7 +44,7 @@ jobs:
     - name: make
       run: make all
 
-  build_windows:
+  windows:
 
     runs-on: ubuntu-latest
 
@@ -53,9 +53,9 @@ jobs:
 
     - name: Setup
       run: |
-          "sudo dpkg --add-architecture i386 && dpkg --print-foreign-architectures && sudo apt-get update"
-          "sudo apt-get install gcc-mingw-w64-i686 wine-development wine32 wine-binfmt imagemagick"
-          "sudo update-binfmts --import /usr/share/binfmts/wine"
+          sudo dpkg --add-architecture i386 && dpkg --print-foreign-architectures && sudo apt-get update
+          sudo apt-get install gcc-mingw-w64-i686 wine-development wine32 wine-binfmt imagemagick
+          sudo update-binfmts --import /usr/share/binfmts/wine
 
     - name: Build
       run: sys/autoconf/build_win32.sh
