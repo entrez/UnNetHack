@@ -75,4 +75,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: unnethack-win32-${{ env.version }}-${{ env.sha_short }}_2
-        path:/tmp/unnethack_win32/unnethack-win32-*/**
+        path: /tmp/unnethack_win32/unnethack-win32-*/*
