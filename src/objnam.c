@@ -768,11 +768,22 @@ unsigned cxn_flags; /* bitmask of CXN_xxx values */
         Strcpy(buf, makeplural(buf));
     }
 
-    if (obj->otyp == T_SHIRT && program_state.gameover) {
+    if (program_state.gameover) {
         char tmpbuf[BUFSZ];
 
-        Sprintf(eos(buf), " with text \"%s\"", tshirt_text(obj, tmpbuf));
+        switch (obj->otyp) {
+        case T_SHIRT:
+            Sprintf(eos(buf), " with text \"%s\"", tshirt_text(obj, tmpbuf));
+            break;
+        case HAWAIIAN_SHIRT:
+            Sprintf(eos(buf), " with %s motif",
+                    an(hawaiian_motif(obj, tmpbuf)));
+            break;
+        default:
+            break;
+        }
     }
+
 
     if (has_oname(obj) && dknown) {
         Strcat(buf, " named ");

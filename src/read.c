@@ -79,6 +79,72 @@ char *buf;
 }
 
 char *
+hawaiian_motif(shirt, buf)
+struct obj *shirt;
+char *buf;
+{
+    unsigned motif;
+    static const char *hawaiian_motifs[] = {
+        /* birds */
+        "flamingo",
+        "parrot",
+        "toucan",
+        "bird of paradise", /* could be a bird or a flower */
+        /* sea creatures */
+        "sea turtle",
+        "tropical fish",
+        "jellyfish",
+        "giant eel",
+        "water nymph",
+        /* plants */
+        "plumeria",
+        "orchid",
+        "hibiscus flower",
+        "palm tree",
+        /* other */
+        "hula dancer",
+        "sailboat",
+        "ukulele",
+    };
+
+    /* tourists' starting shirt always has a consistent o_id, so we need to
+    * introduce additional randomness or else its design will never differ */
+    motif = shirt->o_id ^ (unsigned) u.ubirthday;
+
+    Strcpy(buf, hawaiian_motifs[motif % SIZE(hawaiian_motifs)]);
+    return buf;
+}
+
+static char *
+hawaiian_design(shirt, buf)
+struct obj *shirt;
+char *buf;
+{
+    unsigned bg;
+    static const char *hawaiian_bgs[] = {
+        /* solid colors */
+        "purple",
+        "yellow",
+        "red",
+        "blue",
+        "orange",
+        "black",
+        "green",
+        /* adjectives */
+        "abstract",
+        "geometric",
+        "patterned",
+        "naturalistic",
+    };
+
+    bg = shirt->o_id ^ (unsigned) ~u.ubirthday;
+    Sprintf(buf, "%s on %s background",
+            makeplural(hawaiian_motif(shirt, buf)),
+            an(hawaiian_bgs[bg % SIZE(hawaiian_bgs)]));
+    return buf;
+}
+
+char *
 tshirt_text(tshirt, buf)
 struct obj *tshirt;
 char *buf;
@@ -222,44 +288,56 @@ doread()
         useup(scroll);
         return 1;
 #ifdef TOURIST
-    } else if (scroll->otyp == T_SHIRT || scroll->otyp == ALCHEMY_SMOCK) {
+    } else if (scroll->otyp == T_SHIRT || scroll->otyp == ALCHEMY_SMOCK 
+            || scroll->otyp == HAWAIIAN_SHIRT) {
         char buf[BUFSZ];
 
         if (Blind) {
             You_cant("feel any Braille writing.");
             return 0;
         }
-        if (u.roleplay.illiterate) {
+        if (u.roleplay.illiterate && scroll->otyp != HAWAIIAN_SHIRT) {
             pline("Unfortunately you cannot read!");
             return 0;
         }
         /* can't read shirt worn under suit (under cloak is ok though) */
-        if (scroll->otyp == T_SHIRT && uarm && scroll == uarmu) {
+        if (scroll->otyp != ALCHEMY_SMOCK && uarm && scroll == uarmu) {
             pline("%s shirt is obscured by %s %s.",
                   scroll->unpaid ? "That" : "Your", shk_your(buf, uarm),
                   suit_simple_name(uarm));
             return 0;
         }
 
-        if (successful_cdt(CONDUCT_ILLITERACY)) {
-            livelog_printf(LL_CONDUCT, "became literate by reading %s",
-                           an(dump_typename(scroll->otyp)));
-        }
-        violated(CONDUCT_ILLITERACY);
+        char *mesg = (scroll->otyp == T_SHIRT)
+                        ? tshirt_text(scroll, buf)
+                        : (scroll->otyp == HAWAIIAN_SHIRT)
+                            ? hawaiian_design(scroll, buf)
+                            : apron_text(scroll, buf);
 
-        /* populate 'buf[]' */
-        char *mesg = (scroll->otyp == T_SHIRT) ? tshirt_text(scroll, buf) : apron_text(scroll, buf);
-        const char *endpunct = "";
-        if (flags.verbose) {
-            int ln = (int) strlen(mesg);
-
-            /* we will be displaying a sentence; need ending punctuation */
-            if (ln > 0 && !index(".!?", mesg[ln - 1])) {
-                endpunct = ".";
+        if (scroll->otyp == HAWAIIAN_SHIRT) {
+            pline("%s features %s.", flags.verbose ? "The design" : "It",
+                  mesg);
+        } else { /* Apron or t-shirt */
+            if (successful_cdt(CONDUCT_ILLITERACY)) {
+                livelog_printf(LL_CONDUCT, "became literate by reading %s",
+                               an(dump_typename(scroll->otyp)));
             }
-            pline("It reads:");
+            violated(CONDUCT_ILLITERACY);
+
+            /* populate 'buf[]' */
+            const char *endpunct = "";
+            if (flags.verbose) {
+                int ln = (int) strlen(mesg);
+
+                /* we will be printing a sentence; need ending punctuation */
+                if (ln > 0 && !index(".!?", mesg[ln - 1])) {
+                    endpunct = ".";
+                }
+                pline("It reads:");
+            }
+            pline("\"%s\"%s", mesg, endpunct);
         }
-        pline("\"%s\"%s", mesg, endpunct);
+
         return 1;
     } else if (scroll->otyp == CREDIT_CARD) {
         static const char *card_msgs[] = {
