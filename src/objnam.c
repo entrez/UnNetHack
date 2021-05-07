@@ -773,7 +773,10 @@ unsigned cxn_flags; /* bitmask of CXN_xxx values */
 
         switch (obj->otyp) {
         case T_SHIRT:
-            Sprintf(eos(buf), " with text \"%s\"", tshirt_text(obj, tmpbuf));
+        case ALCHEMY_SMOCK:
+            Sprintf(eos(buf), " with text \"%s\"",
+                    (obj->otyp == T_SHIRT) ? tshirt_text(obj, tmpbuf)
+                                           : apron_text(obj, tmpbuf));
             break;
         case HAWAIIAN_SHIRT:
             Sprintf(eos(buf), " with %s motif",

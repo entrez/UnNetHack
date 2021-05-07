@@ -232,7 +232,7 @@ char *buf;
     return erode_obj_text(tshirt, buf);
 }
 
-static char *
+char *
 apron_text(apron, buf)
 struct obj *apron;
 char *buf;
